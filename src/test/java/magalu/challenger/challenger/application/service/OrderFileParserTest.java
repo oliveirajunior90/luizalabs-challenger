@@ -19,11 +19,11 @@ class OrderFileParserTest {
 
         OrderFileParserDTO record = parser.parseLine(line);
 
-        assertThat(record.userId()).isEqualTo(70L);
-        assertThat(record.userName()).isEqualTo("Palmer Prosacco");
-        assertThat(record.orderId()).isEqualTo(753L);
-        assertThat(record.productId()).isEqualTo(3L);
-        assertThat(record.productValue()).isEqualByComparingTo(new BigDecimal("1836.74"));
-        assertThat(record.purchaseDate()).isEqualTo(LocalDate.of(2021, 3, 8));
+        assertThat(record.userId()).isEqualTo(14L);
+        assertThat(record.userName()).isEqualTo("Clelia Hills");
+        assertThat(record.orderId()).isEqualTo(146L);
+        assertThat(record.productId()).isEqualTo(1L);
+        assertThat(record.productValue()).isEqualByComparingTo(new BigDecimal("673.49"));
+        assertThat(record.purchaseDate()).isEqualTo(LocalDate.of(2021, 11, 25));
     }
 }
