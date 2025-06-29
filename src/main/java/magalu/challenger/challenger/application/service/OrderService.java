@@ -6,8 +6,11 @@ import magalu.challenger.challenger.application.dto.UserDTO;
 import magalu.challenger.challenger.domain.entity.Order;
 import magalu.challenger.challenger.domain.entity.OrderItem;
 import magalu.challenger.challenger.infraestructure.repository.OrderRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +25,20 @@ public class OrderService {
     public OrderWithUserDTO getOrderById(Long orderId) {
         Order order = orderRepository.findOrderById(orderId);
 
+        return transformOrderToDTO(order);
+    }
+
+    public List<OrderWithUserDTO> getOrdersByDateRange(LocalDate startDate, LocalDate endDate, boolean ascending) {
+
+        Sort sort = ascending ? Sort.by("purchaseDate").ascending() : Sort.by("purchaseDate").descending();
+        List<Order> orders = orderRepository.findByPurchaseDateBetween(startDate, endDate, sort);
+
+        return orders.stream()
+            .map(this::transformOrderToDTO)
+            .collect(Collectors.toList());
+    }
+
+    private OrderWithUserDTO transformOrderToDTO(Order order) {
         return new OrderWithUserDTO(
                 order.getId(),
                 order.getPurchaseDate().toString(),
