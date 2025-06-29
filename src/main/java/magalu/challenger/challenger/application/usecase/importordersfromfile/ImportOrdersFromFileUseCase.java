@@ -1,6 +1,6 @@
-package magalu.challenger.challenger.application.usecase;
+package magalu.challenger.challenger.application.usecase.importordersfromfile;
 
-import magalu.challenger.challenger.application.service.OrderImportService;
+import magalu.challenger.challenger.application.service.orderimport.OrderImportService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,8 +1,10 @@
 package magalu.challenger.challenger.application.service;
 
-import magalu.challenger.challenger.domain.repository.OrderItemRepository;
-import magalu.challenger.challenger.domain.repository.OrderRepository;
-import magalu.challenger.challenger.domain.repository.UserRepository;
+import magalu.challenger.challenger.application.service.orderimport.OrderFileParser;
+import magalu.challenger.challenger.application.service.orderimport.OrderImportService;
+import magalu.challenger.challenger.infraestructure.repository.OrderItemRepository;
+import magalu.challenger.challenger.infraestructure.repository.OrderRepository;
+import magalu.challenger.challenger.infraestructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

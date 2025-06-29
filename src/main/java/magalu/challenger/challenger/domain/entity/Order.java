@@ -1,6 +1,5 @@
 package magalu.challenger.challenger.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -21,7 +20,6 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "orderId", fetch = FetchType.LAZY)

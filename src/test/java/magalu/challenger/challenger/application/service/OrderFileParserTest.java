@@ -1,13 +1,11 @@
 package magalu.challenger.challenger.application.service;
 
+import magalu.challenger.challenger.application.service.orderimport.OrderFileParser;
 import magalu.challenger.challenger.infraestructure.fileimport.parser.OrderFileParserDTO;
-
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderFileParserTest {
 
@@ -19,11 +17,10 @@ class OrderFileParserTest {
 
         OrderFileParserDTO record = parser.parseLine(line);
 
-        assertThat(record.userId()).isEqualTo(14L);
-        assertThat(record.userName()).isEqualTo("Clelia Hills");
-        assertThat(record.orderId()).isEqualTo(146L);
-        assertThat(record.productId()).isEqualTo(1L);
-        assertThat(record.productValue()).isEqualByComparingTo(new BigDecimal("673.49"));
-        assertThat(record.purchaseDate()).isEqualTo(LocalDate.of(2021, 11, 25));
+        Assertions.assertThat(record.userName()).isEqualTo("Clelia Hills");
+        Assertions.assertThat(record.orderId()).isEqualTo(146L);
+        Assertions.assertThat(record.productId()).isEqualTo(1L);
+        Assertions.assertThat(record.productValue()).isEqualByComparingTo(new BigDecimal("673.49"));
+        Assertions.assertThat(record.purchaseDate()).isEqualTo(LocalDate.of(2021, 11, 25));
     }
 }

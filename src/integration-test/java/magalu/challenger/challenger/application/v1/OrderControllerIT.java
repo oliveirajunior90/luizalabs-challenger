@@ -75,4 +75,20 @@ public class OrderControllerIT extends IntegrationTest {
         assert response.getBody().contains("John Doe");
         assert response.getBody().contains("Jane Doe");
     }
+
+    @Test
+    public void shouldGetOrderById() {
+        User user = new User(1L, "John Doe");
+        Order order = new Order(1L, user, LocalDate.of(2023, 10, 1));
+        OrderItem orderItem = new OrderItem(order.getId(), 3L, new BigDecimal("100.00"));
+
+        userRepository.save(user);
+        orderRepository.save(order);
+        orderItemRepository.save(orderItem);
+
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/order/1", String.class);
+
+        assert response.getBody().contains("John Doe");
+        assert response.getBody().contains("100.00");
+    }
 }

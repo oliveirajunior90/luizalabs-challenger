@@ -1,4 +1,4 @@
-package magalu.challenger.challenger.application.service;
+package magalu.challenger.challenger.application.service.orderimport;
 
 import magalu.challenger.challenger.infraestructure.fileimport.parser.OrderFileParserDTO;
 import org.springframework.stereotype.Service;
