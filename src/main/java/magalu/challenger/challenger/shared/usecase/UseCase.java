@@ -1,4 +1,4 @@
-package magalu.challenger.challenger.shared;
+package magalu.challenger.challenger.shared.usecase;
 
 @FunctionalInterface
 public interface UseCase<I> {
