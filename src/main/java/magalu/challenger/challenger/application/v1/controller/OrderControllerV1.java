@@ -5,6 +5,7 @@ import magalu.challenger.challenger.application.dto.UserWithOrdersDTO;
 import magalu.challenger.challenger.application.service.OrderService;
 import magalu.challenger.challenger.application.usecase.importordersfromfile.ImportOrdersFromFile;
 import magalu.challenger.challenger.application.usecase.user.getuserwithorder.GetUserWithOrder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -50,6 +52,19 @@ public class OrderControllerV1 {
         }
 
         return ResponseEntity.ok(usersWithOrders);
+    }
+
+    @GetMapping(params = {"startDate", "endDate"})
+    public ResponseEntity<List<OrderWithUserDTO>> getOrdersByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(name = "asc", required = false, defaultValue="false") boolean asc
+    ) {
+        List<OrderWithUserDTO> orders = orderService.getOrdersByDateRange(startDate, endDate, asc);
+        if (orders.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{id}")

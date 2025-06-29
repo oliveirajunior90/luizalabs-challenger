@@ -91,4 +91,26 @@ public class OrderControllerIT extends IntegrationTest {
         assert response.getBody().contains("John Doe");
         assert response.getBody().contains("100.00");
     }
+
+    @Test
+    public void shouldGetOrdersByDateRange() {
+        User user = new User(1L, "John Doe");
+        Order firstOrder = new Order(1L, user, LocalDate.of(2023, 10, 1));
+        Order secondOrder = new Order(2L, user, LocalDate.of(2024, 10, 2));
+        OrderItem firstOrderItem = new OrderItem(firstOrder.getId(), 3L, new BigDecimal("100.00"));
+        OrderItem secondOrderItem = new OrderItem(secondOrder.getId(), 2L, new BigDecimal("200.00"));
+
+        userRepository.save(user);
+        orderRepository.saveAll(List.of(firstOrder, secondOrder));
+        orderItemRepository.saveAll(List.of(firstOrderItem, secondOrderItem));
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                "/api/v1/order?startDate=2023-10-01&endDate=2023-10-02&asc=true",
+                String.class
+        );
+
+        assert response.getBody().contains("John Doe");
+        assert response.getBody().contains("100.00");
+        assert !response.getBody().contains("200.00");
+    }
 }
