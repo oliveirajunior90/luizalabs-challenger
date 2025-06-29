@@ -1,11 +1,12 @@
 package magalu.challenger.challenger.application.service;
 
+import jakarta.transaction.Transactional;
 import magalu.challenger.challenger.domain.entity.Order;
 import magalu.challenger.challenger.domain.entity.OrderItem;
 import magalu.challenger.challenger.domain.entity.User;
-import magalu.challenger.challenger.domain.repository.OrderItemRepository;
-import magalu.challenger.challenger.domain.repository.OrderRepository;
-import magalu.challenger.challenger.domain.repository.UserRepository;
+import magalu.challenger.challenger.infraestructure.repository.OrderItemRepository;
+import magalu.challenger.challenger.infraestructure.repository.OrderRepository;
+import magalu.challenger.challenger.infraestructure.repository.UserRepository;
 import magalu.challenger.challenger.infraestructure.fileimport.parser.OrderFileParserDTO;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class OrderImportService {
         this.itemRepository = itemRepository;
     }
 
+    @Transactional
     public void importFromFile(Path path) {
         Map<Long, User> users = new HashMap<>();
         Map<Long, Order> orders = new HashMap<>();

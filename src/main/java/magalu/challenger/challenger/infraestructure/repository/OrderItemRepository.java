@@ -1,4 +1,4 @@
-package magalu.challenger.challenger.domain.repository;
+package magalu.challenger.challenger.infraestructure.repository;
 
 import magalu.challenger.challenger.domain.entity.OrderItem;
 import magalu.challenger.challenger.domain.entity.OrderItemId;
