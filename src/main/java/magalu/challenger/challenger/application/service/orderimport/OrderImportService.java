@@ -1,4 +1,4 @@
-package magalu.challenger.challenger.application.service;
+package magalu.challenger.challenger.application.service.orderimport;
 
 import jakarta.transaction.Transactional;
 import magalu.challenger.challenger.domain.entity.Order;

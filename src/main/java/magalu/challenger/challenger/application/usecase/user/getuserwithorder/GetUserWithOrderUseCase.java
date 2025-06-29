@@ -1,4 +1,4 @@
-package magalu.challenger.challenger.application.usecase.order;
+package magalu.challenger.challenger.application.usecase.user.getuserwithorder;
 
 import magalu.challenger.challenger.application.dto.OrderDTO;
 import magalu.challenger.challenger.application.dto.OrderItemDTO;
