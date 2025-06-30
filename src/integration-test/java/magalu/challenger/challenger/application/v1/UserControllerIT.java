@@ -48,7 +48,6 @@ public class UserControllerIT extends IntegrationTest {
         orderItemRepository.saveAll(List.of(firstOrderItem, secondOrderItem,thirdOrderItem, fourthOrderItem));
 
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/user", String.class);
-
         assert response.getBody().contains("John Doe");
         assert response.getBody().contains("Jane Doe");
     }

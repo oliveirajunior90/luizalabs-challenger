@@ -84,6 +84,7 @@ public class OrderControllerIT extends IntegrationTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
         ResponseEntity<String> response = restTemplate.postForEntity(
                 "/api/v1/order/upload",
                 requestEntity,
