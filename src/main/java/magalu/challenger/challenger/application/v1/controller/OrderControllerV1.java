@@ -1,5 +1,8 @@
 package magalu.challenger.challenger.application.v1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import magalu.challenger.challenger.application.dto.OrderWithUserDTO;
 import magalu.challenger.challenger.application.dto.PageResponseDTO;
 import magalu.challenger.challenger.application.service.OrderService;
@@ -36,12 +39,20 @@ public class OrderControllerV1 {
         return "OK Tico";
     }
 
+    @Operation(summary = "Importa um arquivo de pedidos", description = "Faz upload de um arquivo contendo pedidos para importação em lote.")
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadOrdersFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadOrdersFile(
+            @Parameter(
+                    description = "Arquivo CSV de pedidos",
+                    required = true,
+                    schema = @Schema(type = "string", format = "binary")
+            )
+            @RequestParam("file") MultipartFile file) {
         importOrdersFromFile.execute(file);
         return ResponseEntity.ok("File imported successfully.");
     }
 
+    @Operation(summary = "Busca pedidos por intervalo de datas", description = "Retorna pedidos realizados entre as datas informadas, ordenados por data de compra.")
     @GetMapping(params = {"startDate", "endDate"})
     public ResponseEntity<PageResponseDTO<OrderWithUserDTO>> getOrdersByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -65,6 +76,7 @@ public class OrderControllerV1 {
         return ResponseEntity.ok(orders);
     }
 
+    @Operation(summary = "Busca pedido por ID")
     @GetMapping("/{id}")
     public ResponseEntity<OrderWithUserDTO> getOrderById(@PathVariable Long id) {
         OrderWithUserDTO order = orderService.getOrderById(id);

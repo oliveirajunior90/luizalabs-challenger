@@ -6,10 +6,28 @@ services:
       POSTGRES_DB: ordercontrol
       POSTGRES_USER: order
       POSTGRES_PASSWORD: order
+    networks:
+      - app_net
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
-
+      - "db_data:/var/lib/postgresql/data"
+  app:
+    image: challenger:0.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_HOST=db
+      - DB_DATABASE=ordercontrol
+      - DB_USERNAME=order
+      - DB_PASSWORD=order
+    networks:
+      - app_net
+    depends_on:
+      - db
 volumes:
   db_data:
+
+networks:
+  app_net:

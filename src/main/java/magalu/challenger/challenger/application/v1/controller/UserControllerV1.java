@@ -1,5 +1,6 @@
 package magalu.challenger.challenger.application.v1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import magalu.challenger.challenger.application.dto.PageResponseDTO;
 import magalu.challenger.challenger.application.dto.UserWithOrdersDTO;
 import magalu.challenger.challenger.application.usecase.user.getuserwithorder.GetUserWithOrder;
@@ -21,6 +22,10 @@ public class UserControllerV1 {
         this.getUsersWithOrders = getUsersWithOrders;
     }
 
+    @Operation(
+            summary = "Busca usuários com pedidos",
+            description = "Retorna uma lista paginada de usuários e seus pedidos."
+    )
     @GetMapping
     public ResponseEntity<PageResponseDTO<UserWithOrdersDTO>> getOrders(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
