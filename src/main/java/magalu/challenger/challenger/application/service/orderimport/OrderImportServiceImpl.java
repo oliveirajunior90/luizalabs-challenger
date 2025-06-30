@@ -70,16 +70,22 @@ public class OrderImportServiceImpl implements OrderImportService {
 
             for (OrderFileParserDTO dto : dtos) {
 
-                final User user = usersAlreadyExists.get(dto.userId());
+                User user = usersAlreadyExists.get(dto.userId());
                 if (user == null) {
-                    newUsers.computeIfAbsent(dto.userId(),
-                            id -> new User(id, dto.userName()));
+                    user = newUsers.get(dto.userId());
+                    if (user == null) {
+                        user = new User(dto.userId(), dto.userName());
+                        newUsers.put(dto.userId(), user);
+                    }
                 }
 
-                final Order order = orderAlreadyExists.get(dto.orderId());
+                Order order = orderAlreadyExists.get(dto.orderId());
                 if (order == null) {
-                    newOrders.computeIfAbsent(dto.orderId(),
-                            id -> new Order(id, user, dto.purchaseDate()));
+                    order = newOrders.get(dto.orderId());
+                    if (order == null) {
+                        order = new Order(dto.orderId(), user, dto.purchaseDate());
+                        newOrders.put(dto.orderId(), order);
+                    }
                 }
 
                 OrderItem item = new OrderItem(dto.orderId(), dto.productId(), dto.productValue());
