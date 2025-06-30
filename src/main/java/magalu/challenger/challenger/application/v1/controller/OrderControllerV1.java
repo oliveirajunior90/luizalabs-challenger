@@ -39,13 +39,12 @@ public class OrderControllerV1 {
         return "OK Tico";
     }
 
-    @Operation(summary = "Importa um arquivo de pedidos", description = "Faz upload de um arquivo contendo pedidos para importação em lote.")
+    @Operation(summary = "Importa um arquivo de pedidos", description = "Faz upload de um arquivo contendo pedidos para importação em lote2.")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadOrdersFile(
             @Parameter(
                     description = "Arquivo CSV de pedidos",
-                    required = true,
-                    schema = @Schema(type = "string", format = "binary")
+                    required = true
             )
             @RequestParam("file") MultipartFile file) {
         importOrdersFromFile.execute(file);

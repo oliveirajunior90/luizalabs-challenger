@@ -15,5 +15,5 @@ CREATE TABLE order_item (
     product_id BIGINT NOT NULL,
     product_value DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (order_id, product_id),
-    CONSTRAINT fk_order_item_order FOREIGN KEY (order_id) REFERENCES orders(id)
+    CONSTRAINT fk_order_item_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;
 );
