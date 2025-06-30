@@ -45,13 +45,9 @@
 - **Testes de Integração**  
   Localizados em `src/integration-test/java`, executados com Maven Failsafe e Testcontainers.
 
-## Como Executar
+## Build e Execução
 
 - `make start` — Inicia a aplicação rodando tudo através do docker.
-- `make build` — Gera o pacote da aplicação sem rodar os testes.
-- `make build-image` — Gera a imagem Docker da aplicação.
-- `make docker-up` — Sobe os containers Docker (após build da imagem).
-- `make test-unit` — Executa testes unitários.
 - `make test-integration` — Executa testes de integração.
 - `make test-coverage` — Gera relatório de cobertura de testes.
 
