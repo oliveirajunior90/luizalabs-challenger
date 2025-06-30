@@ -2,11 +2,13 @@ package magalu.challenger.challenger.application.service;
 
 import magalu.challenger.challenger.application.service.orderimport.OrderFileParser;
 import magalu.challenger.challenger.application.service.orderimport.OrderImportService;
+import magalu.challenger.challenger.application.service.orderimport.OrderImportServiceImpl;
 import magalu.challenger.challenger.infraestructure.repository.OrderItemRepository;
 import magalu.challenger.challenger.infraestructure.repository.OrderRepository;
 import magalu.challenger.challenger.infraestructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +35,7 @@ class OrderImportServiceTest {
         userRepository = mock(UserRepository.class);
         orderRepository = mock(OrderRepository.class);
         itemRepository = mock(OrderItemRepository.class);
-        service = new OrderImportService(parser, userRepository, orderRepository, itemRepository);
+        service = new OrderImportServiceImpl(parser, userRepository, orderRepository, itemRepository);
     }
 
     @Test
