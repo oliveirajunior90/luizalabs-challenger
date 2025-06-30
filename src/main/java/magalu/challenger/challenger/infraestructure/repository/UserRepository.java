@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.orders")
-    List<User> findAllWithOrders(Pageable pageable);
+    @EntityGraph(attributePaths = "orders")
+    Page<User> findAll(Pageable pageable);
 
 }

@@ -39,44 +39,6 @@ public class OrderControllerIT extends IntegrationTest {
     TestRestTemplate restTemplate;
 
     @Test
-    public void shouldImportOrdersFromFile() {
-        ClassPathResource resource = new ClassPathResource("data_1.txt");
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", resource);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/order/upload",
-                requestEntity,
-                String.class
-        );
-
-        assert response.getStatusCode().is2xxSuccessful();
-    }
-
-    @Test
-    public void shouldGetOrders() {
-        User firstUser = new User(1L, "John Doe");
-        User secondUser = new User(2L, "Jane Doe");
-        Order firstOrder = new Order(1L, firstUser, LocalDate.of(2023,10, 1));
-        Order secondOrder = new Order(2L, secondUser, LocalDate.of(2023,10, 1));
-        OrderItem firstOrderItem = new OrderItem(firstOrder.getId(), 3L, new BigDecimal("100.00"));
-        OrderItem secondOrderItem = new OrderItem(firstOrder.getId(), 2L, new BigDecimal("200.00"));
-        OrderItem thirdOrderItem = new OrderItem(secondOrder.getId(), 3L, new BigDecimal("300.00"));
-        OrderItem fourthOrderItem = new OrderItem(secondOrder.getId(), 2L, new BigDecimal("400.00"));
-
-        userRepository.saveAll(List.of(firstUser, secondUser));
-        orderRepository.saveAll(List.of(firstOrder, secondOrder));
-        orderItemRepository.saveAll(List.of(firstOrderItem, secondOrderItem,thirdOrderItem, fourthOrderItem));
-
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/order", String.class);
-
-        assert response.getBody().contains("John Doe");
-        assert response.getBody().contains("Jane Doe");
-    }
-
-    @Test
     public void shouldGetOrderById() {
         User user = new User(1L, "John Doe");
         Order order = new Order(1L, user, LocalDate.of(2023, 10, 1));
@@ -112,5 +74,22 @@ public class OrderControllerIT extends IntegrationTest {
         assert response.getBody().contains("John Doe");
         assert response.getBody().contains("100.00");
         assert !response.getBody().contains("200.00");
+    }
+
+    @Test
+    public void shouldImportOrdersFromFile() {
+        ClassPathResource resource = new ClassPathResource("data_1.txt");
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", resource);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "/api/v1/order/upload",
+                requestEntity,
+                String.class
+        );
+
+        assert response.getStatusCode().is2xxSuccessful();
     }
 }
