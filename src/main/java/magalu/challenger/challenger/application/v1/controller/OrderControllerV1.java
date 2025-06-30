@@ -1,10 +1,12 @@
 package magalu.challenger.challenger.application.v1.controller;
 
 import magalu.challenger.challenger.application.dto.OrderWithUserDTO;
-import magalu.challenger.challenger.application.dto.UserWithOrdersDTO;
+import magalu.challenger.challenger.application.dto.PageResponseDTO;
 import magalu.challenger.challenger.application.service.OrderService;
 import magalu.challenger.challenger.application.usecase.importordersfromfile.ImportOrdersFromFile;
-import magalu.challenger.challenger.application.usecase.user.getuserwithorder.GetUserWithOrder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1/order")
 public class OrderControllerV1 {
 
     final ImportOrdersFromFile importOrdersFromFile;
-    final GetUserWithOrder getUsersWithOrders;
     final OrderService orderService;
 
-    public OrderControllerV1(ImportOrdersFromFile importOrdersFromFile, GetUserWithOrder getUsersWithOrders, OrderService orderService) {
+    public OrderControllerV1(ImportOrdersFromFile importOrdersFromFile, OrderService orderService) {
         this.importOrdersFromFile = importOrdersFromFile;
-        this.getUsersWithOrders = getUsersWithOrders;
         this.orderService = orderService;
     }
 
@@ -44,24 +42,24 @@ public class OrderControllerV1 {
         return ResponseEntity.ok("File imported successfully.");
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserWithOrdersDTO>> getOrders() {
-        List<UserWithOrdersDTO> usersWithOrders = getUsersWithOrders.execute();
-        if (usersWithOrders.isEmpty()) {
+    @GetMapping(params = {"startDate", "endDate"})
+    public ResponseEntity<PageResponseDTO<OrderWithUserDTO>> getOrdersByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(name = "asc", required = false, defaultValue="false") boolean asc,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size
+    ) {
+
+        if (startDate == null || endDate == null) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(usersWithOrders);
-    }
+        Sort sort = asc ? Sort.by("purchaseDate").ascending() : Sort.by("purchaseDate").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        PageResponseDTO<OrderWithUserDTO> orders = orderService.getOrdersByDateRange(startDate, endDate, pageable);
 
-    @GetMapping(params = {"startDate", "endDate"})
-    public ResponseEntity<List<OrderWithUserDTO>> getOrdersByDateRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam(name = "asc", required = false, defaultValue="false") boolean asc
-    ) {
-        List<OrderWithUserDTO> orders = orderService.getOrdersByDateRange(startDate, endDate, asc);
-        if (orders.isEmpty()) {
+        if (orders.content().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(orders);

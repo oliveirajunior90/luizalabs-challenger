@@ -1,11 +1,10 @@
 package magalu.challenger.challenger.application.usecase.user.getuserwithorder;
 
+import magalu.challenger.challenger.application.dto.PageResponseDTO;
 import magalu.challenger.challenger.application.dto.UserWithOrdersDTO;
-import magalu.challenger.challenger.shared.usecase.UseCaseOut;
+import magalu.challenger.challenger.shared.usecase.UseCaseInOut;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
-
-public interface GetUserWithOrder extends UseCaseOut<List<UserWithOrdersDTO>> {
+public interface GetUserWithOrder extends UseCaseInOut<Pageable, PageResponseDTO<UserWithOrdersDTO>> {
 
 }

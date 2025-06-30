@@ -2,12 +2,13 @@ package magalu.challenger.challenger.application.usecase.user.getuserwithorder;
 
 import magalu.challenger.challenger.application.dto.OrderDTO;
 import magalu.challenger.challenger.application.dto.OrderItemDTO;
+import magalu.challenger.challenger.application.dto.PageResponseDTO;
 import magalu.challenger.challenger.application.dto.UserWithOrdersDTO;
 import magalu.challenger.challenger.domain.entity.Order;
 import magalu.challenger.challenger.domain.entity.OrderItem;
 import magalu.challenger.challenger.domain.entity.User;
 import magalu.challenger.challenger.infraestructure.repository.UserRepository;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,18 @@ public class GetUserWithOrderUseCase implements GetUserWithOrder {
         this.userRepository = userRepository;
     }
 
-    public List<UserWithOrdersDTO> execute() {
-        Pageable pageable = PageRequest.of(0, 10);
-        List<User> userWithOrders = userRepository.findAllWithOrders(pageable);
-        return userWithOrders.stream().map(this::transformToDTO).collect(Collectors.toList());
+    public PageResponseDTO<UserWithOrdersDTO> execute(Pageable pageable) {
+        Page<User> userWithOrders = userRepository.findAll(pageable);
+
+        List<UserWithOrdersDTO> userWithOrdersContent = userWithOrders.getContent().stream().map(this::transformToDTO).collect(Collectors.toList());
+
+        return new PageResponseDTO<>(
+                userWithOrdersContent,
+                userWithOrders.getNumber(),
+                userWithOrders.getSize(),
+                userWithOrders.getTotalElements(),
+                userWithOrders.getTotalPages()
+        );
     }
 
     private UserWithOrdersDTO transformToDTO(User user) {
