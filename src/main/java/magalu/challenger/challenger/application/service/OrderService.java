@@ -9,7 +9,6 @@ import magalu.challenger.challenger.domain.entity.OrderItem;
 import magalu.challenger.challenger.infraestructure.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
